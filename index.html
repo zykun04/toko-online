@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toko Online Keren</title>
+    <meta name="description" content="Toko online murah dan terpercaya menjual RAM, prosesor, dan driver WLAN.">
+    <link rel="icon" type="image/png" href="IMAGE/favicon.png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #28a745;
+            color: white;
+            padding: 15px;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        header img {
+            height: 50px;
+            margin-right: 15px;
+        }
+        .container {
+            width: 90%;
+            margin: auto;
+            padding: 20px;
+        }
+        .produk-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .produk {
+            border: 1px solid #ddd;
+            background-color: white;
+            border-radius: 10px;
+            margin: 10px;
+            padding: 15px;
+            width: 220px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        .produk:hover {
+            transform: scale(1.05);
+        }
+        .produk img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        #keranjang {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            width: 50%;
+            display: inline-block;
+            text-align: left;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .kontak {
+            margin-top: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            width: 50%;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        @media (max-width: 768px) {
+            #keranjang, .kontak {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="logo zykun.webp" alt="Logo Toko">
+        <span>zykun network</span>
+    </header>
+    <div class="container">
+        <h1>Produk Kami</h1>
+        <div class="produk-container">
+            <div class="produk">
+                <img src="SAMSUNG.jpg" alt="RAM SAMSUNG">
+                <h2>RAM LAPTOP</h2>
+                <p>Rp 100.000</p>
+                <p><strong>Catatan:</strong> Ram DDR3 dengan merek SAMSUNG, kapasitas 4GB</p>
+                <button onclick="tambahKeKeranjang('RAM SAMSUNG', 100000)">Tambah ke Keranjang</button>
+            </div>
+            <div class="produk">
+                <img src="ELPIDA.jpg" alt="RAM ELPIDA">
+                <h2>RAM LAPTOP</h2>
+                <p>Rp 50.000</p>
+                <p><strong>Catatan:</strong> Ram DDR3 dengan merek ELPIDA, kapasitas 2GB</p>
+                <button onclick="tambahKeKeranjang('RAM ELPIDA', 50000)">Tambah ke Keranjang</button>
+            </div>
+            <div class="produk">
+                <img src="corei3.jpg" alt="CORE I3">
+                <h2>PROSESOR</h2>
+                <p>Rp 50.000</p>
+                <p><strong>Catatan:</strong> Prosesor Core i3</p>
+                <button onclick="tambahKeKeranjang('Prosesor Core i3', 50000)">Tambah ke Keranjang</button>
+            </div>
+        </div>
+    </div>
+    <h2>Keranjang Belanja</h2>
+    <div id="keranjang">
+        <ul id="daftar-keranjang"></ul>
+        <p><strong>Total: Rp <span id="total-harga">0</span></strong></p>
+        <button onclick="checkout()">Beli Sekarang</button>
+    </div>
+    <div class="kontak">
+        <h2>Hubungi Kami</h2>
+        <p>📞 <strong>Telepon:</strong> 0821-1442-2054</p>
+        <p>📧 <strong>Email:</strong> zykunnetwork@email.com</p>
+        <p>📱 <strong>WhatsApp:</strong> <a href="https://wa.me/6282114422054" target="_blank">Chat via WhatsApp</a></p>
+    </div>
+    <script>
+        let keranjang = JSON.parse(localStorage.getItem('keranjang')) || [];
+        function tambahKeKeranjang(nama, harga) {
+            keranjang.push({ nama, harga });
+            localStorage.setItem('keranjang', JSON.stringify(keranjang));
+            updateKeranjang();
+        }
+        function hapusDariKeranjang(index) {
+            keranjang.splice(index, 1);
+            localStorage.setItem('keranjang', JSON.stringify(keranjang));
+            updateKeranjang();
+        }
+        function updateKeranjang() {
+            let daftar = document.getElementById('daftar-keranjang');
+            let totalHarga = 0;
+            daftar.innerHTML = '';
+            keranjang.forEach((item, index) => {
+                let li = document.createElement('li');
+                li.textContent = `${item.nama} - Rp ${item.harga.toLocaleString('id-ID')}`;
+                let btnHapus = document.createElement('button');
+                btnHapus.textContent = 'Hapus';
+                btnHapus.style.marginLeft = '10px';
+                btnHapus.onclick = () => hapusDariKeranjang(index);
+                li.appendChild(btnHapus);
+                daftar.appendChild(li);
+                totalHarga += item.harga;
+            });
+            document.getElementById('total-harga').textContent = totalHarga.toLocaleString('id-ID');
+        }
+        function checkout() {
+            let teks = 'Pesanan saya:\n';
+            keranjang.forEach(item => teks += `- ${item.nama} Rp${item.harga.toLocaleString('id-ID')}\n`);
+            teks += `\nTotal: Rp ${document.getElementById('total-harga').textContent}`;
+            window.open(`https://wa.me/6282114422054?text=${encodeURIComponent(teks)}`);
+        }
+        updateKeranjang();
+    </script>
+</body>
+</html>
